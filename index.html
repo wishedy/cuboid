@@ -21,12 +21,16 @@
 </head>
 <body>
 <div class="cuboid-drag-container">
-    <div class="cuboid-drag-sun">
-        <img src="img/timg1.gif" alt="太阳公公">
-    </div>
     <div class="cuboid-drop-board">
         <ul class="cuboid-drop-target">
-            <li class="cuboid-drop-item"></li>
+            <li class="cuboid-drop-item">
+                <div class="cuboid-drag-sun">
+                    <img src="img/timg1.gif" alt="太阳公公">
+                </div>
+                <div class="cuboid-drag-log">
+                    <img src="img/log.png" alt="log">
+                </div>
+            </li>
             <li class="cuboid-drop-item"></li>
             <li class="cuboid-drop-item"></li>
             <li class="cuboid-drop-item"></li>
@@ -34,15 +38,26 @@
     </div>
     <div class="cuboid-drag-list">
         <ul class="cuboid-drag-station">
-            <li class="cuboid-drag-item" data-drop="false"></li>
-            <li class="cuboid-drag-item" data-drop="false"></li>
-            <li class="cuboid-drag-item" data-drop="false"></li>
-            <li class="cuboid-drag-item" data-drop="false"></li>
+            <li class="cuboid-drag-item" data-drop="false">
+                <div class="cuboid-drag-bar"></div>
+            </li>
+            <li class="cuboid-drag-item" data-drop="false">
+                <div class="cuboid-drag-bar"></div>
+            </li>
+            <li class="cuboid-drag-item" data-drop="false">
+                <div class="cuboid-drag-bar"></div>
+            </li>
+            <li class="cuboid-drag-item" data-drop="false">
+                <div class="cuboid-drag-bar"></div>
+            </li>
         </ul>
     </div>
 </div>
 <div class="cuboid-mask-layer">
-
+    <div class="acuboid-mask-audio">
+        <!--<audio src="audio/lib_6287_6601.mp3"></audio>-->
+        <audio src="audio/lib_965_5531.mp3" id="audio"></audio>
+    </div>
 </div>
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/jquery-ui.js"></script>
