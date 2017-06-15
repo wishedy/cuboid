@@ -1,0 +1,19 @@
+{
+  "name": "cuboid",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "python": "0.0.4"
+  },
+  "devDependencies": {
+    "gulp-sass": "^3.1.0",
+    "gyp": "^0.5.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,13 @@
+$bg: #bcc1c6;
+body{
+  background-color: $bg;
+}
+canvas {
+  background: #111;
+  border: 1px solid #171717;
+  display: block;
+  left: 50%;
+  margin: -51px 0 0 -201px;
+  position: absolute;
+  top: 50%;
+}

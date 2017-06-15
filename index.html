@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=750">
+    <title>长方体制作</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="cuboid-drag-container">
+    <div class="cuboid-drag-sun">
+        <img src="img/timg1.gif" alt="太阳公公">
+    </div>
+    <div class="cuboid-drop-board">
+        <ul class="cuboid-drop-target">
+            <li class="cuboid-drop-item"></li>
+            <li class="cuboid-drop-item"></li>
+            <li class="cuboid-drop-item"></li>
+            <li class="cuboid-drop-item"></li>
+        </ul>
+    </div>
+    <div class="cuboid-drag-list">
+        <ul class="cuboid-drag-station">
+            <li class="cuboid-drag-item" data-drop="false"></li>
+            <li class="cuboid-drag-item" data-drop="false"></li>
+            <li class="cuboid-drag-item" data-drop="false"></li>
+            <li class="cuboid-drag-item" data-drop="false"></li>
+        </ul>
+    </div>
+</div>
+<div class="cuboid-mask-layer">
+
+</div>
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script src="jquery-ui-touch-punch/jquery.ui.touch-punch.js"></script>
+<script src="js/prefixfree.min.js"></script>
+<script src="js/index.js"></script>
+<script src="js/cuboid.js"></script>
+</body>
+</html>
