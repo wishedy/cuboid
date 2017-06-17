@@ -3,13 +3,16 @@
  */
 $(document).ready(function(){
     var element = {
+        firstContainer:$(".cuboid-drag-container"),
+        nextContainer:$(".cuboid-drag-second-container"),
         origin:$(".cuboid-drag-station"),
         dragItem:$(".cuboid-drag-item"),
         target:$(".cuboid-drop-item"),
         successBar:$(".cuboid-drop-board"),
         dragActive:null,
         dragBar:$(".cuboid-drag-bar"),
-        audio:document.getElementById('audio')
+        audio:document.getElementById('audio'),
+        next:$(".cuboid-drag-next")
 
     };
     var parameter = {
@@ -25,7 +28,7 @@ $(document).ready(function(){
     var cuboid = {
         init:function(){
             var t = this;
-            t.dragStart().fadeInMask().storePosition().calculateWidthGap();
+            t.dragStart().fadeInMask().storePosition().calculateWidthGap().next();
             return t;
         },
         fadeInMask:function(){
@@ -113,6 +116,15 @@ $(document).ready(function(){
             element.audio.play();
             return t;
         },
+        next:function(){
+          var t = this;
+          element.next.off("touchend click").on("touchend click",function(){
+              console.log(element.firstContainer)
+                element.firstContainer.fadeOut(1000);
+              element.nextContainer.fadeIn(400);
+          });
+          return t;
+        },
         dragStart:function(){
             var t = this;
             element.dragItem.draggable(
@@ -146,12 +158,16 @@ $(document).ready(function(){
                     var locationLeft = dropInfo.posLeft;
                     var locationTop = dropInfo.posTop;
                     if(dropOnff){
-                        if(!JSON.parse(element.dragActive.attr("data-drop"))){
+                        if($(this).attr("data-child")){
+                            t.restorePos();
+                        }else{
                             element.dragActive.attr({"data-drop":"true"});
                             element.dragActive.offset({top:locationTop,left:locationLeft}) ;
                             element.audio.src="audio/lib_6287_6601.mp3";
                             element.audio.play();
+                            $(this).attr({"data-child":"'true"});
                         }
+
 
                     }else{
                         t.restorePos();
