@@ -6,9 +6,12 @@ $(document).ready(function(){
         firstContainer:$(".cuboid-drag-container"),
         nextContainer:$(".cuboid-drag-second-container"),
         origin:$(".cuboid-drag-station"),
-        dragItem:$(".cuboid-drag-item"),
-        target:$(".cuboid-drop-item"),
-        successBar:$(".cuboid-drop-board"),
+        dragItem:$(".cuboid-drag-container .cuboid-drag-item"),
+        target:$(".cuboid-drag-container .cuboid-drop-item"),
+        dragItemSecond:$(".cuboid-drag-second-container  .cuboid-drag-item"),
+        targetSecond:$(".cuboid-drag-second-container .cuboid-drop-item"),
+        successBar:$(".cuboid-drag-container .cuboid-drop-board"),
+        successBarSecond:$(".cuboid-drag-second-container .cuboid-drop-board"),
         dragActive:null,
         dragBar:$(".cuboid-drag-bar"),
         audio:document.getElementById('audio'),
@@ -16,26 +19,35 @@ $(document).ready(function(){
 
     };
     var parameter = {
+        index:0,
         leftDis: [],
         widthGap: 0,
         heightGap:0,
-        allowError: 20,
+        allowError: 30,
         topDis: [],
         originalLeft:[],
         originalTop:[],
-        passNum:6
+        passNum:6,
+        container:".cuboid-drag-container"
     };
     var cuboid = {
         init:function(){
             var t = this;
-            t.dragStart().fadeInMask().storePosition().calculateWidthGap().next();
+            t.dragStart(false).fadeInMask().storePosition(false).calculateWidthGap().next();
             return t;
         },
         fadeInMask:function(){
           var t = this;
           $(".cuboid-mask-layer").fadeOut(1400);
           $("canvas").fadeOut(1400);
+            t.playMusic()
           return t;
+        },
+        playMusic:function(){
+           var t = this;
+            element.audio.src="audio/lib_boys.mp3";
+            element.audio.play();
+            return t;
         },
         calculateWidthGap:function(){
             var t = this;
@@ -45,13 +57,24 @@ $(document).ready(function(){
             parameter.heightGap =((parseInt(diffH)/2)>0)?(parseInt(diffH)/2):(parseInt(diffH)/2)*(-1);
             return t;
         },
-        storePosition:function(){
+        storePosition:function(onOff){
           var t = this;
-            element.dragItem.each(function(){
+            parameter.leftDis = [];
+            parameter.topDis = [];
+            var dragItem = null;
+            var targetItem = null;
+            if(onOff){
+                dragItem =element.dragItemSecond;
+                targetItem= element.targetSecond;
+            }else{
+                dragItem =element.dragItem;
+                targetItem= element.target;
+            }
+            dragItem.each(function(){
                 parameter.originalLeft.push($(this).offset().left);
                 parameter.originalTop.push(parseInt($(this).offset().top));
             });
-            element.target.each(function(){
+            targetItem.each(function(){
                 var jsonItem = {};
                 jsonItem.topPx = parseInt($(this).offset().top);
                 parameter.leftDis.push(parseInt($(this).offset().left));
@@ -59,6 +82,7 @@ $(document).ready(function(){
                 jsonItem.child = null;
                 parameter.topDis.push(jsonItem)
             });
+
             return t;
         },
         dropInOnOff:function(){
@@ -79,8 +103,23 @@ $(document).ready(function(){
                 }
             });
             function judgeTopOnOff(){
-                var item = parameter.topDis[element.dragActive.index()];
-                var topPx = item.topPx;
+                //debugger;
+                var item = null;
+                var topPx = null;
+                item = parameter.topDis[element.dragActive.index()];
+                if(parameter.index==0){
+                    topPx  = item.topPx
+                }else{
+                    var oneGap = resultTop-parameter.topDis[0].topPx;
+                    var twoGap = resultTop - parameter.topDis[3].topPx;
+                    oneGap = (oneGap>0)?oneGap:(oneGap)*(-1);
+                    twoGap = (twoGap>0)?twoGap:(twoGap)*(-1);
+                    if(oneGap<twoGap){
+                        topPx = parameter.topDis[0].topPx;
+                    }else{
+                        topPx = parameter.topDis[3].topPx;
+                    }
+                }
                 var actualGap = ((topPx-resultTop)>0)?(topPx-resultTop):(topPx-resultTop)*(-1);
                 var errorHeight = actualGap-parameter.heightGap;
                 topOnOff = errorHeight<parameter.allowError;
@@ -95,7 +134,7 @@ $(document).ready(function(){
                 }
             }
             judgeTopOnOff();
-            var resultJson = {"dropOnOff":leftOnOff&&topOnOff,posLeft:locationLeft,posTop:locationTop}
+            var resultJson = {"dropOnOff":leftOnOff&&topOnOff,posLeft:locationLeft,posTop:locationTop};
             return resultJson;
         },
         restorePos:function(){
@@ -109,27 +148,51 @@ $(document).ready(function(){
         },
         successFn:function(){
             var t = this;
-            element.dragItem.fadeOut(1000);
-            element.successBar.addClass("cuboid-drop-success");
+            var sucessObj = null;
+            var dragObj = null;
+            if(parameter.index==0){
+                sucessObj = element.successBar;
+                dragObj = element.dragItem;
+            }else{
+                sucessObj = element.successBarSecond;
+                dragObj = element.dragItemSecond;
+            }
+            dragObj.fadeOut(1000);
+            sucessObj.addClass("cuboid-drop-success");
             element.target.addClass("cuboid-drop-unify");
-            element.audio.src="audio/lib_6287_6601.mp3";
+            element.audio.src="audio/lib_success.mp3";
             element.audio.play();
             return t;
         },
         next:function(){
           var t = this;
           element.next.off("touchend click").on("touchend click",function(){
-              console.log(element.firstContainer)
                 element.firstContainer.fadeOut(1000);
               element.nextContainer.fadeIn(400);
+              parameter.container = ".cuboid-drag-second-container";
+              element.dragItem.each(function(){
+                  $(this).attr({"data-drop":"false"});
+              });
+              t.dragStart(true).fadeInMask().storePosition(true).calculateWidthGap();
+              parameter.index++;
           });
           return t;
         },
-        dragStart:function(){
+        dragStart:function(onOff){
             var t = this;
-            element.dragItem.draggable(
+            var dragItem = null;
+            var targetItem = null;
+            if(onOff){
+                 dragItem =element.dragItemSecond;
+                 targetItem= element.targetSecond;
+            }else{
+                dragItem =element.dragItem;
+                targetItem= element.target;
+            }
+
+            dragItem.draggable(
                 {
-                    containment: ".cuboid-drag-container",
+                    containment: parameter.container,
                     scroll: false,
                     start: function() {
                         $(this).attr({"data-drop":"false"});
@@ -151,7 +214,7 @@ $(document).ready(function(){
                         }
                     }
                 });
-            element.target.droppable({
+            targetItem.droppable({
                 drop: function( event, ui ) {
                     var dropInfo = t.dropInOnOff();
                     var dropOnff = dropInfo.dropOnOff;
@@ -162,7 +225,12 @@ $(document).ready(function(){
                             t.restorePos();
                         }else{
                             element.dragActive.attr({"data-drop":"true"});
-                            element.dragActive.offset({top:locationTop,left:locationLeft}) ;
+                            if(parameter.index==0){
+                                element.dragActive.offset({top:locationTop,left:locationLeft}) ;
+                            }else{
+                                element.dragActive.offset({top:locationTop-5,left:locationLeft-12}) ;
+                            }
+
                             element.audio.src="audio/lib_6287_6601.mp3";
                             element.audio.play();
                             $(this).attr({"data-child":"'true"});
