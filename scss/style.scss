@@ -1,6 +1,13 @@
 /*index style*/
-$baseWidth:80vw;
-$baseHeight:90vh;
+$baseWidth:100vw;
+$baseHeight:100vh;
+$outContainer:6rem;
+$innerContainer:4rem;
+$size:6;
+$upRotate:3rem;
+$rotate:2rem;
+$sRotate:3rem;
+$lucency:0.2;
 @mixin middle(){
   margin:0 auto;
 }
@@ -11,10 +18,13 @@ $baseHeight:90vh;
   position: relative;
   margin-top:20px;
   background: url("../img/timg.jpg") no-repeat center 50%;
+  background-size: cover;
+  transform-style: preserve-3d;
   .cuboid-drag-sun{
     position: absolute;
-    top:-4rem;
-    left: 1rem;
+    top:1rem;
+    z-index: 2;
+    right: 4rem;
     img{
       width:3rem;
       height:3rem;
@@ -23,8 +33,10 @@ $baseHeight:90vh;
   .cuboid-drag-log{
     width:28rem;
     position: absolute;
-    top:-3.4rem;
-    left: 5rem;
+    top:2rem;
+    right:50%;
+    margin-right: -14rem;
+    z-index: 2;
     img{
       width:100%;
       height:100%;
@@ -41,31 +53,144 @@ $baseHeight:90vh;
       flex-direction: row;
       justify-content: center;
       align-items: center;
+      position: relative;
       .cuboid-drop-item{
-        width: 10rem;
-        height:10rem;
+        width: $outContainer;
+        height:$outContainer;
+        position: relative;
+        border:1px solid rgba(159, 41, 58, 0.3);
+        .cuboid-drop-side{
+          position: absolute;
+          top: 0;
+          left:0;
+          width:100%;
+          height:100%;
+          display: none;
+          border:1px solid #333;
+          transform-style: preserve-3d;
+          transform:rotateX(-90deg) translateZ($sRotate);
+        }
+        .cuboid-drop-side:nth-child(1){
+          transform:rotateX(90deg) translateZ($sRotate);
+          border-left: none;
+          border-right: none;
+        }
+        .cuboid-drop-side:nth-child(2){
+          transform:rotateX(-90deg) translateZ($sRotate);
+          border-left: none;
+          border-right: none;
+        }
+        .cuboid-drop-side:nth-child(3){
+          transform:rotateY(90deg)  translateZ($sRotate);
+          border-top: none;
+          border-bottom: none;
+          border-left: none;
+          border-right: none;
+        }
+        .cuboid-drop-side:nth-child(4){
+          transform:rotateY(-90deg)  translateZ($sRotate);
+          border-top: none;
+          border-bottom: none;
+          border-left: none;
+          border-right: none;
+        }
+        .cuboid-drop-side:nth-child(5){
+          transform:translateZ($sRotate);
+          border-left: none;
+          border-right: none;
+        }
+        .cuboid-drop-side:nth-child(6){
+          transform:translateZ(-$sRotate);
+          border-left: none;
+          border-right: none;
+        }
       }
       .cuboid-drop-item:nth-child(1){
-        background: #32a0d6;
+        background: url("../img/mie.jpg") no-repeat center 50%;
+        background-size: cover;
         position: relative;
+        .cuboid-drop-side:nth-child(1){
+          border: 1px solid #333;
+          border-right:none;
+        }
+        .cuboid-drop-side:nth-child(2){
+          border: 1px solid #333;
+          border-right:none;
+        }
+        .cuboid-drop-side:nth-child(4){
+          border: 1px solid #333;
+        }
+        .cuboid-drop-side:nth-child(5){
+          border: 1px solid #333;
+          border-right: none;
+        }
+        .cuboid-drop-side:nth-child(6){
+          border: 1px solid #333;
+          border-right: none;
+        }
       }
       .cuboid-drop-item:nth-child(2){
-        background: #85d528;
+        background: url("../img/mie1.jpg") no-repeat center 50%;
+        background-size: cover;
       }
       .cuboid-drop-item:nth-child(3){
-        background: #bfb34b;
+        background: url("../img/mie2.jpg") no-repeat center 50%;
+        background-size: cover;
       }
       .cuboid-drop-item:nth-child(4){
-        background: #80ccd6;
+        background: url("../img/mie3.jpg") no-repeat center 50%;
+        background-size: cover;
+      }
+      .cuboid-drop-item:nth-child(5){
+        background: url("../img/mie4.jpg") no-repeat center 50%;
+        background-size: cover;
+      }
+      .cuboid-drop-item:nth-child(6){
+        background: url("../img/mie5.jpg") no-repeat center 50%;
+        background-size: cover;
+        .cuboid-drop-side:nth-child(1){
+          border: 1px solid #333;
+          border-left:none;
+        }
+        .cuboid-drop-side:nth-child(3){
+          border: 1px solid #333;
+        }
+        .cuboid-drop-side:nth-child(5){
+          border: 1px solid #333;
+          border-left: none;
+        }
+        .cuboid-drop-side:nth-child(6){
+          border: 1px solid #333;
+          border-left: none;
+        }
+        .cuboid-drop-side:nth-child(2){
+          border: 1px solid #333;
+          border-left:none;
+        }
       }
       .cuboid-drop-unify{
         background: #0bd8bd !important;
       }
     }
   }
+  .cuboid-drop-success{
+    .cuboid-drop-target{
+      transform-style: preserve-3d;
+      transform:rotateX(-10deg) rotateY(-4deg);
+      .cuboid-drop-item{
+        background: none !important;
+        border:none !important;
+        .cuboid-drop-side{
+          display: block;
+        }
+      }
+    }
+  }
   .cuboid-drag-list{
+    transform-style: preserve-3d;
+    transform:rotateX(-8deg) rotateY(-8deg);
     @include middle();
-    width:90%;
+    width:100%;
     height:15%;
     margin-top:20px;
     .cuboid-drag-station{
@@ -73,39 +198,99 @@ $baseHeight:90vh;
       height:100%;
       display: flex;
       flex-direction: row;
-      justify-content: center;
+      justify-content: space-around;
       align-items: center;
       .cuboid-drag-item{
-        width: 10rem;
-        height:10rem;
+        width: $outContainer;
+        height:$outContainer;
         display: flex;
         align-items: center;
         .cuboid-drag-bar{
           @include middle();
-          width:8rem;
-          height:8rem;
+          width: $outContainer;
+          height:$outContainer;
+          position: relative;
+          .cuboid-drag-side{
+            width:100%;
+            height:100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            border:1px solid #712f0c;
+          }
+          .cuboid-drag-side:nth-child(1) {
+            transform:rotateX(90deg) translateZ($sRotate);
+
+          }
+          .cuboid-drag-side:nth-child(2) {
+            transform:rotateX(-90deg) translateZ($sRotate);
+          }
+          .cuboid-drag-side:nth-child(3) {
+            transform:rotateY(90deg)  translateZ($sRotate);
+          }
+          .cuboid-drag-side:nth-child(4) {
+            transform:rotateY(-90deg)  translateZ($sRotate);
+          }
+          .cuboid-drag-side:nth-child(5) {
+            transform:translateZ($sRotate);
+          }
+          .cuboid-drag-side:nth-child(6) {
+            width: 100%;
+            height: 100%;
+            transform:translateZ(-$sRotate);
+          }
          // border:1px solid #ff0000;
         }
       }
       .cuboid-drag-item:nth-child(1){
         .cuboid-drag-bar{
-          background: #7e6bd6;
+          //border: 1px solid #ff0000;
+          .cuboid-drag-side{
+            background: rgba(52,238,174,$lucency);
+          }
         }
       }
       .cuboid-drag-item:nth-child(2){
         .cuboid-drag-bar{
-          background: #d17789;
+          .cuboid-drag-side{
+            background: rgba(209,119,137,$lucency);
+          }
+
         }
       }
       .cuboid-drag-item:nth-child(3){
-        .cuboid-drag-bar{
-          background: #a9a419;
+
+        .cuboid-drag-bar{.cuboid-drag-side{
+          background: rgba(169,164,25,$lucency);
+        }
+
         }
       }
       .cuboid-drag-item:nth-child(4){
-        .cuboid-drag-bar{
-          background: #29d481;
+
+        .cuboid-drag-bar{.cuboid-drag-side{
+          background: rgba(41,212,29,$lucency);
         }
+
+        }
+      }
+      .cuboid-drag-item:nth-child(5){
+        .cuboid-drag-bar{.cuboid-drag-side{
+          background: rgba(89,164,165,$lucency);
+        }
+
+        }
+      }
+      .cuboid-drag-item:nth-child(6){
+        .cuboid-drag-bar{.cuboid-drag-side{
+          background: rgba(151,212,192,$lucency);
+        }
+
+        }
+      }
+      .cuboid-drag-success{
+        width: $innerContainer;
+        height:$innerContainer;
       }
     }
   }
