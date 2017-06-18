@@ -15,7 +15,8 @@ $(document).ready(function(){
         dragActive:null,
         dragBar:$(".cuboid-drag-bar"),
         audio:document.getElementById('audio'),
-        next:$(".cuboid-drag-next")
+        next:$(".cuboid-drag-next"),
+        again:$(".cuboid-drag-again")
 
     };
     var parameter = {
@@ -33,7 +34,14 @@ $(document).ready(function(){
     var cuboid = {
         init:function(){
             var t = this;
-            t.dragStart(false).fadeInMask().storePosition(false).calculateWidthGap().next();
+            t.dragStart(false).fadeInMask().storePosition(false).calculateWidthGap().next().again();
+            return t;
+        },
+        again:function(){
+          var t = this;
+            element.again.off("click mousedown touchend").on("click mousedown touchend",function(){
+               window.location.reload();
+            });
             return t;
         },
         fadeInMask:function(){
@@ -111,13 +119,24 @@ $(document).ready(function(){
                     topPx  = item.topPx
                 }else{
                     var oneGap = resultTop-parameter.topDis[0].topPx;
-                    var twoGap = resultTop - parameter.topDis[3].topPx;
+                    var twoGap = resultTop - parameter.topDis[2].topPx;
+                    var threeGap = resultTop - parameter.topDis[4].topPx;
                     oneGap = (oneGap>0)?oneGap:(oneGap)*(-1);
                     twoGap = (twoGap>0)?twoGap:(twoGap)*(-1);
+                    threeGap = (threeGap>0)?threeGap:(threeGap)*(-1);
+                    var min  = 0;
                     if(oneGap<twoGap){
-                        topPx = parameter.topDis[0].topPx;
+                        if(oneGap<threeGap){
+                            topPx = parameter.topDis[0].topPx;
+                        }else{
+                            topPx = parameter.topDis[4].topPx;
+                        }
                     }else{
-                        topPx = parameter.topDis[3].topPx;
+                        if(twoGap<threeGap){
+                            topPx = parameter.topDis[2].topPx;
+                        }else{
+                            topPx = parameter.topDis[4].topPx;
+                        }
                     }
                 }
                 var actualGap = ((topPx-resultTop)>0)?(topPx-resultTop):(topPx-resultTop)*(-1);
@@ -134,6 +153,7 @@ $(document).ready(function(){
                 }
             }
             judgeTopOnOff();
+            console.log(leftOnOff,topOnOff)
             var resultJson = {"dropOnOff":leftOnOff&&topOnOff,posLeft:locationLeft,posTop:locationTop};
             return resultJson;
         },
@@ -156,6 +176,8 @@ $(document).ready(function(){
             }else{
                 sucessObj = element.successBarSecond;
                 dragObj = element.dragItemSecond;
+                console.log(element.again)
+                element.again.show(1000);
             }
             dragObj.fadeOut(1000);
             sucessObj.addClass("cuboid-drop-success");
@@ -220,6 +242,7 @@ $(document).ready(function(){
                     var dropOnff = dropInfo.dropOnOff;
                     var locationLeft = dropInfo.posLeft;
                     var locationTop = dropInfo.posTop;
+                    console.log(dropInfo)
                     if(dropOnff){
                         if($(this).attr("data-child")){
                             t.restorePos();
